@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class patient extends Model
+class nurse extends Model
 {
-    /** @use HasFactory<\Database\Factories\PatientFactory> */
+    /** @use HasFactory<\Database\Factories\NurseFactory> */
     use HasFactory;
 
     protected $fillable = [
-        'phn',
         'case_number',
         'consultation_date',
         'consultation_time',
