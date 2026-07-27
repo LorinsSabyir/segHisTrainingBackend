@@ -11,16 +11,13 @@ class nurse extends Model
     use HasFactory;
 
     protected $fillable = [
-        'case_number',
-        'consultation_date',
-        'consultation_time',
-        'family_name',
-        'given_name',
+        'first_name',
+        'last_name',
         'suffix',
         'date_of_birth',
         'sex',
-        'blood_group',
-        'time_of_arrival',
+        'phone_number',
+        'address',
         
     ];
 }

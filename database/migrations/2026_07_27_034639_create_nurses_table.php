@@ -12,19 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('nurses', function (Blueprint $table) {
-            $table->id('uid');
+            $table->id();
             $table->timestamps();
-            $table->string('case_number');
-            $table->date('consultation_date');
-            $table->time('consultation_time');
-            $table->string('family_name');
-            $table->string('given_name');
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('suffix')->nullable();
             $table->date('date_of_birth');
             $table->string('sex');
-            $table->string('blood_group');
-            $table->time('time_of_arrival');
-
+            $table->string('phone_number');
+            $table->string('address');
 
         });
     }
