@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('case_number');
             $table->date('consultation_date')->nullable();
             $table->time('consultation_time')->nullable();
-            $table->string('fist_name');
+            $table->string('first_name');
             $table->string('last_name');
             $table->string('suffix')->nullable();
             $table->date('date_of_birth')->nullable();
@@ -26,7 +26,10 @@ return new class extends Migration
             $table->string('blood_group')->nullable();
             $table->time('time_of_arrival')->nullable();
             $table->string('phone_number')->nullable();
-            $table->string('address')->nullable();
+            $table->string('address_street')->nullable();
+            $table->string('address_brgy')->nullable();
+            $table->string('address_city')->nullable();
+            $table->string('address_province')->nullable();
             
         });
     }

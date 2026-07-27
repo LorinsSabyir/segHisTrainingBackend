@@ -15,5 +15,5 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 // Patient Api
-// TODO: fix error
-// Route::apiResource('/store/patients', [PatientController::class, 'store']);
+Route::post('/patients/index', [PatientController::class, 'index']);
+Route::post('/patients/store', [PatientController::class, 'store']);

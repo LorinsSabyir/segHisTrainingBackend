@@ -23,7 +23,10 @@ class patient extends Model
         'blood_group',
         'time_of_arrival',
         'phone_number',
-        'address',
+        'address_street',
+        'address_brgy',
+        'address_city',
+        'address_province',
         
     ];
 }

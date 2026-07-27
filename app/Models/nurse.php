@@ -11,6 +11,8 @@ class nurse extends Model
     use HasFactory;
 
     protected $fillable = [
+        'email',
+        'password',
         'first_name',
         'last_name',
         'suffix',

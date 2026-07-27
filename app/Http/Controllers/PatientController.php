@@ -6,9 +6,18 @@ use App\Models\patient;
 use App\Http\Requests\StorepatientRequest;
 use App\Http\Requests\UpdatepatientRequest;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class PatientController extends Controller
+class PatientController extends Controller implements HasMiddleware
 {
+
+    public static function middleware() {
+        return [
+            new Middleware('auth:sanctum', except: ['index', 'show' ])
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -34,13 +43,17 @@ class PatientController extends Controller
             'blood_group' => 'nullable|string|max:255',
             'time_of_arrival' => 'nullable|string|max:255',
             'phone_number' => 'nullable|string|max:11',
-            'address' => 'nullable|string|max:255',
+            'address_street' => 'nullable|string|max:255',
+            'address_brgy' => 'nullable|string|max:255',
+            'address_city' => 'nullable|string|max:255',
+            'address_province' => 'nullable|string|max:255',
         ]);
+        $lastPatient = Patient::orderByDesc('phn')->first();
 
-        $patient = patient::create($fields);
+        $fields['phn'] = $lastPatient ? str_pad((int)$lastPatient->phn + 1, 6, '0', STR_PAD_LEFT) : '000001';
 
-        $patient->phn = str_pad($patient->id, 6, '0', STR_PAD_LEFT);
-        $patient->save();
+        $patient = $request->user()->patient()->create($fields);
+        // $patient = patient::create($fields);
 
         return [ 'patient' => $patient ];
     }
