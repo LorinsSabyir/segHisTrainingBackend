@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\patient;
+use App\Models\Patient;
 use App\Http\Requests\StorepatientRequest;
 use App\Http\Requests\UpdatepatientRequest;
 use Illuminate\Http\Request;
@@ -23,7 +23,7 @@ class PatientController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        return patient::all();
+        return Patient::all();
     }
 
     /**
@@ -47,21 +47,22 @@ class PatientController extends Controller implements HasMiddleware
             'address_brgy' => 'nullable|string|max:255',
             'address_city' => 'nullable|string|max:255',
             'address_province' => 'nullable|string|max:255',
+            
         ]);
         $lastPatient = Patient::orderByDesc('phn')->first();
 
         $fields['phn'] = $lastPatient ? str_pad((int)$lastPatient->phn + 1, 6, '0', STR_PAD_LEFT) : '000001';
 
-        $patient = $request->user()->patient()->create($fields);
+        $patient = $request->user()->patients()->create($fields);
         // $patient = patient::create($fields);
 
-        return [ 'patient' => $patient ];
+        return $patient;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(patient $patient)
+    public function show(Patient $patient)
     {
         //
     }
@@ -69,7 +70,7 @@ class PatientController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, patient $patient)
+    public function update(Request $request, Patient $patient)
     {
         //
     }
@@ -77,7 +78,7 @@ class PatientController extends Controller implements HasMiddleware
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(patient $patient)
+    public function destroy(Patient $patient)
     {
         //
     }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\nurse;
+use App\Models\Nurse;
 use App\Http\Requests\StorenurseRequest;
 use App\Http\Requests\UpdatenurseRequest;
 use App\Illuminate\Http\Request;
@@ -28,7 +28,7 @@ class NurseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(nurse $nurse)
+    public function show(Nurse $nurse)
     {
         //
     }
@@ -36,7 +36,7 @@ class NurseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatenurseRequest $request, nurse $nurse)
+    public function update(UpdatenurseRequest $request, Nurse $nurse)
     {
         //
     }
@@ -44,7 +44,7 @@ class NurseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(nurse $nurse)
+    public function destroy(Nurse $nurse)
     {
         //
     }

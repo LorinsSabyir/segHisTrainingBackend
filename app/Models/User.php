@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Patient;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
@@ -28,4 +29,9 @@ class User extends Authenticatable
         'email',
         'password',
     ];
+
+    public function patients()
+    {
+        return $this->hasMany(Patient::class, 'nurse_id');
+    }
 }

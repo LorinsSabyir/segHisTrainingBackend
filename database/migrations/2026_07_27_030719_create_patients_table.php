@@ -30,6 +30,8 @@ return new class extends Migration
             $table->string('address_brgy')->nullable();
             $table->string('address_city')->nullable();
             $table->string('address_province')->nullable();
+            $table->foreignId('nurse_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->foreignId('doctor_id')->nullable()->constrained('users')->onDelete('set null');
             
         });
     }
