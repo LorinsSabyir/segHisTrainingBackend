@@ -191,4 +191,35 @@ class SegApiService
     {
         return $this->get('/nurse/show/name_first/' . $firstName . '/name_last/' . $lastName);
     }
+
+    // ============================================
+    // PATIENTS ENDPOINTS
+    // ============================================
+
+    /**
+     * Retrieve all Patients
+     * GET /patient/show/
+     */
+    public function getAllPatients()
+    {
+        return $this->get('/patient/show/');
+    }
+
+    /**
+     * Retrieve Patient by ID
+     * GET /patient/show/id/{id}
+     */
+    public function getPatientById($id)
+    {
+        return $this->get('/patient/show/id/' . $id);
+    }
+
+    /**
+     * Retrieve patient by name
+     * GET /patient/show/name_first/{first}/name_last/{last}
+     */
+    public function getPatientByName($firstName, $lastName)
+    {
+        return $this->get('/patient/show/name_last/' . $lastName . '/name_first/' . $firstName);
+    }
 }
