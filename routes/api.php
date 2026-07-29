@@ -15,5 +15,13 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 // Patient Api
-Route::post('/patients/index', [PatientController::class, 'index']);
+Route::get('/patients/index', [PatientController::class, 'index']);
 Route::post('/patients/store', [PatientController::class, 'store']);
+
+// External API routes for SEG service
+use App\Http\Controllers\Api\SegDoctorController;
+
+Route::middleware('auth:sanctum')->prefix('seg')->group(function () {
+    Route::get('/doctors', [SegDoctorController::class, 'index']);
+    Route::get('/doctors/{id}', [SegDoctorController::class, 'show']);
+});

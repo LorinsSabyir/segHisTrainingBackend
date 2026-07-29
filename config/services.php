@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'seg' => [
+        'base_url' => env('SEG_API_URL', 'https://18.141.212.73/segservice'),
+        'timeout' => env('SEG_API_TIMEOUT', 60),
+        'username' => env('SEG_API_USERNAME'),
+        'password' => env('SEG_API_PASSWORD'),
+        'verify_ssl' => env('SEG_API_VERIFY_SSL', true),
+    ]
+
 ];
