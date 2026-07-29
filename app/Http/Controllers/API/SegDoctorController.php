@@ -34,6 +34,28 @@ class SegDoctorController extends Controller
     }
 
     /**
+     * GET /api/seg/doctors/department/{deptId}
+     * Retrieve doctor information based on {deptid}.
+     */
+    public function byDepartment(string $deptId): JsonResponse
+    {
+        $result = $this->segApiService->getDoctorsByDepartment($deptId);
+
+        return $this->respond($result);
+    }
+
+    /**
+     * GET /api/seg/doctors/name/{firstName}/{lastName}
+     * Retrieve a specific doctor based on given {name}.
+     */
+    public function byName(string $firstName, string $lastName): JsonResponse
+    {
+        $result = $this->segApiService->getDoctorByName($firstName, $lastName);
+
+        return $this->respond($result);
+    }
+    
+    /**
      * Shared response formatter for this controller's actions.
      */
     protected function respond(array $result): JsonResponse
