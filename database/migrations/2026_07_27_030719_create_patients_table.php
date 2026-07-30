@@ -14,24 +14,32 @@ return new class extends Migration
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('phn')->unique();
-            $table->string('case_number');
-            $table->date('consultation_date')->nullable();
-            $table->time('consultation_time')->nullable();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('suffix')->nullable();
-            $table->date('date_of_birth')->nullable();
+            $table->string('pid')->unique();
+            $table->date('date_registered')->nullable();
+            $table->string('name_first');
+            $table->string('name_last');
+            $table->string('name_middle')->nullable();
+            $table->string('name_suffix')->nullable();
             $table->string('sex');
-            $table->string('blood_group')->nullable();
-            $table->time('time_of_arrival')->nullable();
             $table->string('phone_number')->nullable();
+            $table->string('blood_group')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->integer('age')->nullable();
+            $table->string('civil_status')->nullable();
+            $table->string('place_of_birth')->nullable();
+            $table->string('religion')->nullable();
+            $table->string('ethnicity')->nullable();
             $table->string('address_street')->nullable();
             $table->string('address_brgy')->nullable();
             $table->string('address_city')->nullable();
             $table->string('address_province')->nullable();
-            $table->foreignId('nurse_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->foreignId('doctor_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->string('address_country')->nullable();
+            $table->string('address_zipcode')->nullable();
+            $table->string('patient_mother_name')->nullable();
+            $table->string('patient_father_name')->nullable();
+            $table->string('patient_guardian_name')->nullable();
+            $table->string('patient_guardian_relationship')->nullable();
+            $table->string('patient_spouse_name')->nullable();
             
         });
     }

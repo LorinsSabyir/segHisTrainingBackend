@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::create('wards', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('ward_id')->unique();
+            $table->string('description');
+            $table->string('dept_nr');
+            
         });
     }
 
