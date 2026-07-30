@@ -14,6 +14,13 @@ return new class extends Migration
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('deptnr')->nullable();
+            $table->string('deptid')->nullable();
+            $table->string('dept_name')->nullable();
+            $table->string('dept_shortname')->nullable();
+            $table->string('parent_dept_nr')->nullable();
+            $table->string('parent_name')->nullable();
+            
         });
     }
 

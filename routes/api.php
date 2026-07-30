@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
-// ---------- API routes for authentication and patient management ----------
+// ---------- API routes for authentication ----------
 // Auth Api
 use App\Http\Controllers\AuthController;
 
@@ -13,11 +13,46 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
+
+
+// ---------- API routes for hospital management ----------
 // Patient Api
 use App\Http\Controllers\PatientController;
 
-Route::get('/patient/index', [PatientController::class, 'index']);
-Route::post('/patient/store', [PatientController::class, 'store']);
+Route::middleware('auth:sanctum')->prefix('patient')->group(function () {
+  Route::get('/index', [PatientController::class, 'index']);
+  Route::post('/store', [PatientController::class, 'store']);
+  Route::get('/{id}', [PatientController::class, 'show']);
+  Route::put('/{id}', [PatientController::class, 'update']);
+  Route::delete('/{id}', [PatientController::class, 'destroy']);
+
+  Route::get('/pid/{pid}', [PatientController::class, 'getPatientById']);
+  Route::get('/name/{name_last}/{name_first}', [PatientController::class, 'getPatientByName']);
+  
+});
+
+// Encounter Api
+use App\Http\Controllers\EncounterController;
+
+Route::middleware('auth:sanctum')->prefix('patient_encounter')->group(function () {
+
+});
+
+// Ward Api
+use App\Http\Controllers\WardController;
+
+Route::middleware('auth:sanctum')->prefix('patient_encounter')->group(function () {
+
+});
+
+// Department Api
+use App\Http\Controllers\DepartmentController;
+
+Route::middleware('auth:sanctum')->prefix('department')->group(function () {
+
+});
+
+
 
 // ---------- External API routes for SEG service ----------
 // Doctors API.
