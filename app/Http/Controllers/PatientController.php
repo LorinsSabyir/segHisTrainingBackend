@@ -49,9 +49,9 @@ class PatientController extends Controller implements HasMiddleware
             'address_province' => 'nullable|string|max:255',
             
         ]);
-        $lastPatient = Patient::orderByDesc('phn')->first();
+        $lastPatient = Patient::orderByDesc('pid')->first();
 
-        $fields['phn'] = $lastPatient ? str_pad((int)$lastPatient->phn + 1, 6, '0', STR_PAD_LEFT) : '000001';
+        $fields['pid'] = $lastPatient ? str_pad((int)$lastPatient->pid + 1, 6, '0', STR_PAD_LEFT) : '000001';
 
         $patient = $request->user()->patients()->create($fields);
         // $patient = patient::create($fields);

@@ -24,14 +24,21 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+
+    //  TODO: Add the data and roles: Nurse, Doctor, Admin
     protected $fillable = [
         'name',
         'email',
         'password',
     ];
 
-    public function patients()
+    public function nursePatients()
     {
         return $this->hasMany(Patient::class, 'nurse_id');
+    }
+
+    public function doctorPatients()
+    {
+        return $this->hasMany(Patient::class, 'doctor_id');
     }
 }

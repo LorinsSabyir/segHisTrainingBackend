@@ -11,33 +11,37 @@ class Patient extends Model
     use HasFactory;
 
     protected $fillable = [
-        'phn',
-        'case_number',
-        'consultation_date',
-        'consultation_time',
-        'first_name',
-        'last_name',
-        'suffix',
-        'date_of_birth',
+        'pid',
+        'dateRegistered',
+        'name_first',
+        'name_last',
+        'name_middle',
+        'name_suffix',
         'sex',
-        'blood_group',
-        'time_of_arrival',
         'phone_number',
+        'blood_group',
+        'date_of_birth',
+        'age',
+        'civil_status',
+        'place_of_birth',
+        'religion',
+        'ethnicity',
         'address_street',
         'address_brgy',
         'address_city',
         'address_province',
-        'nurse_id',
-        'doctor_id',
+        'address_country',
+        'address_zipcode',
+        'patient_mother_name',
+        'patient_father_name',
+        'patient_guardian_name',
+        'patient_guardian_relationship',
+        'patient_spouse_name',
     ];
 
-    public function nurse()
+    public function patientEncounter()
     {
-        return $this->belongsTo(User::class, 'nurse_id');
+        return $this->hasMany(PatientEncounter::class, 'patient_id');
     }
-    
-    public function doctor()
-    {
-        return $this->belongsTo(User::class, 'doctor_id');
-    }
+
 }
