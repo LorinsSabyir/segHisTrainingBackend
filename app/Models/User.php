@@ -10,9 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Patient;
 
-#[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -25,20 +23,37 @@ class User extends Authenticatable
      * @return array<string, string>
      */
 
-    //  TODO: Add the data and roles: Nurse, Doctor, Admin
+    //  TODO: Add the data
     protected $fillable = [
-        'name',
+        'name_first',
+        'name_last',
+        'name_middle',
+        'name_suffix',
+        'role',
         'email',
         'password',
     ];
 
-    public function nursePatients()
+    protected function casts(): array
+    {
+        return [
+            // 'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
+
+    public function nursePatientLog()
     {
         return $this->hasMany(Patient::class, 'nurse_id');
     }
 
-    public function doctorPatients()
+    public function nursePatientEncounter()
     {
-        return $this->hasMany(Patient::class, 'doctor_id');
+        return $this->hasMany(PatientEncounter::class, 'nurse_id');
+    }
+
+    public function doctorPatientEncounter()
+    {
+        return $this->hasMany(PatientEncounter::class, 'doctor_id');
     }
 }

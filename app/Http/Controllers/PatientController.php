@@ -41,7 +41,7 @@ class PatientController extends Controller implements HasMiddleware
             'blood_group' => 'nullable|string|max:255',
             'date_of_birth' => 'nullable|string|max:255',
             'sex' => 'required|string|max:255',
-            'age' => 'nullable|string|max:255',
+            'age' => 'nullable|integer|max:255',
             'civil_status' => 'nullable|string|max:255',
             'place_of_birth' => 'nullable|string|max:255',
             'religion' => 'nullable|string|max:255',
@@ -61,9 +61,11 @@ class PatientController extends Controller implements HasMiddleware
         ]);
         try {
             $lastPatient = Patient::orderByDesc('pid')->first();
+
             $fields['pid'] = $lastPatient ? str_pad((int) $lastPatient->pid + 1, 6, '0', STR_PAD_LEFT) : '000001';
+            $fields['date_registered'] = now();
     
-            $patient = $request->user()->patients()->create($fields);
+            $patient = $request->user()->nursePatientLog()->create($fields);
     
             return response()->json($patient, 201);
         } catch (\Illuminate\Database\QueryException $e) {
@@ -80,7 +82,7 @@ class PatientController extends Controller implements HasMiddleware
      */
     public function show(Patient $patient)
     {
-        return $patient;
+        return response($patient);
     }
 
     /**
@@ -98,7 +100,7 @@ class PatientController extends Controller implements HasMiddleware
             'blood_group' => 'nullable|string|max:255',
             'date_of_birth' => 'nullable|string|max:255',
             'sex' => 'sometimes|required|string|max:255',
-            'age' => 'nullable|string|max:255',
+            'age' => 'nullable|integer|max:255',
             'civil_status' => 'nullable|string|max:255',
             'place_of_birth' => 'nullable|string|max:255',
             'religion' => 'nullable|string|max:255',
@@ -128,13 +130,16 @@ class PatientController extends Controller implements HasMiddleware
     {
         $patient->delete($patient);
 
-        return response()->noContent();
+        return response()->json([
+            'message' => 'Patient deleted successfully.',
+            'deleted' => $patient,
+        ]);
     }
 
     /**
      * Display the specified Patient PID.
      */
-    public function getPatientById(string $pid)
+    public function getPatientByPid(string $pid)
     {
         $patient = Patient::where('pid', $pid)->first();
 

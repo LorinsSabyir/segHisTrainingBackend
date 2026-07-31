@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name_first');
+            $table->string('name_last');
+            $table->string('name_middle')->nullable();
+            $table->string('name_suffix')->nullable();
+            $table->string('role')->default('nurse'); // Default role is 'nurse', can be 'doctor' or 'admin'
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

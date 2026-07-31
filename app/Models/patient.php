@@ -37,7 +37,13 @@ class Patient extends Model
         'patient_guardian_name',
         'patient_guardian_relationship',
         'patient_spouse_name',
+        'nurse_id',
     ];
+
+    public function nurseLog()
+    {
+        return $this->hasMany(User::class, 'nurse_id');
+    }
 
     public function patientEncounter()
     {

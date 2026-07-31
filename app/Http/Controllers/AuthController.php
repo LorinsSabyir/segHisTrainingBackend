@@ -14,7 +14,11 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $fields = $request->validate([
-            'name' => 'required|string|max:255',
+            'name_first' => 'required|string|max:255',
+            'name_last' => 'required|string|max:255',
+            'name_middle' => 'nullable|string|max:255',
+            'name_suffix' => 'nullable|string|max:255',
+            'role' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
@@ -23,10 +27,14 @@ class AuthController extends Controller
 
         $user = User::create($fields);
 
-        $token = $user->createToken($request->name);
+        $token = $user->createToken($request->name_first);
 
         return [
-            'name' => $user->name,
+            'name_first' => $user->name_first,
+            'name_last' => $user->name_last,
+            'name_middle' => $user->name_middle,
+            'name_suffix' => $user->name_suffix,
+            'role' => $user->role,
             'user' => $user,
             'token' => $token->plainTextToken
         ];
@@ -47,10 +55,14 @@ class AuthController extends Controller
             ];
         }
 
-        $token = $user->createToken($user->name);
+        $token = $user->createToken($user->name_first);
 
         return [
-            'name' => $user->name,
+            'name_first' => $user->name_first,
+            'name_last' => $user->name_last,
+            'name_middle' => $user->name_middle,
+            'name_suffix' => $user->name_suffix,
+            'role' => $user->role,
             'user' => $user,
             'token' => $token->plainTextToken
         ];
@@ -64,5 +76,13 @@ class AuthController extends Controller
             'message' => 'You Logged Out.'
         ];
     }
+
+    // TODO: add delete user for each user
+    // TODO: add update user for each user
+
+    // TODO: add delete user for admin role 
+    // TODO: add update user for admin role
+
+    
 
 }

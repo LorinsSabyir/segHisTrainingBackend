@@ -40,6 +40,7 @@ class PatientSeeder extends Seeder
             'patient_guardian_name' => null,
             'patient_guardian_relationship' => null,
             'patient_spouse_name' => null,
+            'nurse_id' => 1,
 
         ]);
     }

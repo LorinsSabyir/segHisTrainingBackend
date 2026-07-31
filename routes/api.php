@@ -14,19 +14,35 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 
+// ---------- API routes for account management ----------
+use App\Http\Controllers\UserController;
+
+Route::middleware('auth:sanctum')->prefix('user')->group(function () {
+
+});
+
+
+
+// ---------- API routes for admin user management ----------
+Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
+
+});
+
+
+
 
 // ---------- API routes for hospital management ----------
 // Patient Api
 use App\Http\Controllers\PatientController;
 
 Route::middleware('auth:sanctum')->prefix('patient')->group(function () {
-  Route::get('/index', [PatientController::class, 'index']);
+  Route::get('/', [PatientController::class, 'index']);
   Route::post('/store', [PatientController::class, 'store']);
-  Route::get('/{id}', [PatientController::class, 'show']);
-  Route::put('/{id}', [PatientController::class, 'update']);
-  Route::delete('/{id}', [PatientController::class, 'destroy']);
+  Route::get('/show/{patient}', [PatientController::class, 'show']);
+  Route::put('/update/{patient}', [PatientController::class, 'update']);
+  Route::delete('/delete/{patient}', [PatientController::class, 'destroy']);
 
-  Route::get('/pid/{pid}', [PatientController::class, 'getPatientById']);
+  Route::get('/pid/{pid}', [PatientController::class, 'getPatientByPid']);
   Route::get('/name/{name_last}/{name_first}', [PatientController::class, 'getPatientByName']);
   
 });
@@ -41,7 +57,7 @@ Route::middleware('auth:sanctum')->prefix('patient_encounter')->group(function (
 // Ward Api
 use App\Http\Controllers\WardController;
 
-Route::middleware('auth:sanctum')->prefix('patient_encounter')->group(function () {
+Route::middleware('auth:sanctum')->prefix('ward')->group(function () {
 
 });
 
@@ -58,36 +74,48 @@ Route::middleware('auth:sanctum')->prefix('department')->group(function () {
 // Doctors API.
 use App\Http\Controllers\Api\SegDoctorController;
 
-Route::middleware('auth:sanctum')->prefix('seg')->group(function () {
-  Route::get('/doctor', [SegDoctorController::class, 'index']);
-  Route::get('/doctor/department/{deptId}', [SegDoctorController::class, 'byDepartment']);
-  Route::get('/doctor/name/{firstName}/{lastName}', [SegDoctorController::class, 'byName']);
-  Route::get('/doctor/{id}', [SegDoctorController::class, 'show']);
+Route::middleware('auth:sanctum')->prefix('seg/doctor')->group(function () {
+  Route::get('/', [SegDoctorController::class, 'index']);
+  Route::get('/department/{deptId}', [SegDoctorController::class, 'byDepartment']);
+  Route::get('/name/{firstName}/{lastName}', [SegDoctorController::class, 'byName']);
+  Route::get('/{id}', [SegDoctorController::class, 'show']);
 });
 
 // TODO: Fill in the routes for the other SEG API controllers (Nurses, Departments, Encounters, Wards) as needed.
 // Nurses API
 use App\Http\Controllers\Api\SegNurseController;
 
+Route::middleware('auth:sanctum')->prefix('seg/nurse')->group(function () {
+
+});
 
 // Department API
 use App\Http\Controllers\Api\SegDepartmentController;
 
+Route::middleware('auth:sanctum')->prefix('seg/department')->group(function () {
+
+});
 
 // Encounters API
 use App\Http\Controllers\Api\SegEncountersController;
 
+Route::middleware('auth:sanctum')->prefix('seg/patient_encounters')->group(function () {
+
+});
 
 // Ward API
 use App\Http\Controllers\Api\SegWardController;
 
+Route::middleware('auth:sanctum')->prefix('seg/ward')->group(function () {
+
+});
 
 // Patients API
 use App\Http\Controllers\Api\SegPatientController;
 
-Route::middleware('auth:sanctum')->prefix('seg')->group(function () {
-  Route::get('/patient', [SegPatientController::class, 'index']);
-  Route::get('/patient/department/{id}', [SegPatientController::class, 'byId']);
-  Route::get('/patient/name/{lastName}/{firstName}', [SegPatientController::class, 'byName']);
-  Route::get('/patient/{id}', [SegPatientController::class, 'show']);
+Route::middleware('auth:sanctum')->prefix('seg/patient')->group(function () {
+  Route::get('/', [SegPatientController::class, 'index']);
+  Route::get('/{id}', [SegPatientController::class, 'byId']);
+  Route::get('/name/{lastName}/{firstName}', [SegPatientController::class, 'byName']);
+  Route::get('/{id}', [SegPatientController::class, 'show']);
 });

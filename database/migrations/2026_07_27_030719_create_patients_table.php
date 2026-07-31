@@ -40,7 +40,8 @@ return new class extends Migration
             $table->string('patient_guardian_name')->nullable();
             $table->string('patient_guardian_relationship')->nullable();
             $table->string('patient_spouse_name')->nullable();
-            
+            $table->foreignId('nurse_id')->nullable()->constrained('users')->onDelete('set null');
+
         });
     }
 
