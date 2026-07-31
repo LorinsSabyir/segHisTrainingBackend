@@ -44,13 +44,20 @@ Route::middleware('auth:sanctum')->prefix('patient')->group(function () {
 
   Route::get('/pid/{pid}', [PatientController::class, 'getPatientByPid']);
   Route::get('/name/{name_last}/{name_first}', [PatientController::class, 'getPatientByName']);
+  Route::get('/search', [PatientController::class, 'search']);
   
 });
 
 // Encounter Api
-use App\Http\Controllers\EncounterController;
+use App\Http\Controllers\PatientEncounterController;
 
 Route::middleware('auth:sanctum')->prefix('patient_encounter')->group(function () {
+  Route::get('/', [PatientEncounterController::class, 'index']);
+  Route::post('/store', [PatientEncounterController::class, 'store']);
+  Route::get('/show/{patientEncounter}', [PatientEncounterController::class, 'show']);
+  Route::put('/update/{patientEncounter}', [PatientEncounterController::class, 'update']);
+  Route::delete('/delete/{patientEncounter}', [PatientEncounterController::class, 'destroy']);
+  Route::get('/pid/{patient_id}', [PatientEncounterController::class, 'getPatientByPatientId']);
 
 });
 

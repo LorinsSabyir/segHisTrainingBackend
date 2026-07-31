@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
-use App\Http\Requests\StorepatientRequest;
-use App\Http\Requests\UpdatepatientRequest;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Log;
 
 class PatientController extends Controller implements HasMiddleware
 {
@@ -57,20 +57,20 @@ class PatientController extends Controller implements HasMiddleware
             'patient_guardian_name' => 'nullable|string|max:255',
             'patient_guardian_relationship' => 'nullable|string|max:255',
             'patient_spouse_name' => 'nullable|string|max:255',
-            
+
         ]);
         try {
             $lastPatient = Patient::orderByDesc('pid')->first();
 
             $fields['pid'] = $lastPatient ? str_pad((int) $lastPatient->pid + 1, 6, '0', STR_PAD_LEFT) : '000001';
             $fields['date_registered'] = now();
-    
+
             $patient = $request->user()->nursePatientLog()->create($fields);
-    
+
             return response()->json($patient, 201);
-        } catch (\Illuminate\Database\QueryException $e) {
-            \Illuminate\Support\Facades\Log::error('Failed to create patient: ' . $e->getMessage());
-    
+        } catch (QueryException $e) {
+            Log::error('Failed to create patient: '.$e->getMessage());
+
             return response()->json([
                 'message' => 'Unable to save patient record. Please try again.',
             ], 500);
@@ -117,10 +117,21 @@ class PatientController extends Controller implements HasMiddleware
             'patient_guardian_relationship' => 'nullable|string|max:255',
             'patient_spouse_name' => 'nullable|string|max:255',
         ]);
-    
-        $patient->update($fields);
-    
-        return $patient;
+
+        try {
+
+            $patient->update($fields);
+
+            return $patient;
+
+        } catch (QueryException $e) {
+            Log::error('Failed to update patient: '.$e->getMessage());
+
+            return response()->json([
+                'message' => 'Unable to save patient record. Please try again.',
+            ], 500);
+        }
+
     }
 
     /**
@@ -145,7 +156,7 @@ class PatientController extends Controller implements HasMiddleware
 
         if (! $patient) {
             return response()->json([
-                'message' => 'Patient not found.'
+                'message' => 'Patient not found.',
             ], 404);
         }
 
@@ -163,9 +174,29 @@ class PatientController extends Controller implements HasMiddleware
 
         if ($patients->isEmpty()) {
             return response()->json([
-                'message' => 'No patient found.'
+                'message' => 'No patient found.',
             ], 404);
         }
+
+        return response()->json($patients);
+    }
+
+    /**
+     * Searches the specified Patient.
+     */
+    public function search(Request $request)
+    {
+        $query = $request->query('q');
+
+        $patients = Patient::query()
+            ->where('pid', (int) $query)
+            ->orWhere('name_first', 'like', "%{$query}%")
+            ->orWhere('name_last', 'like', "%{$query}%")
+            ->orWhere('name_middle', 'like', "%{$query}%")
+            ->orWhere('phone_number', 'like', "%{$query}%")
+            ->orWhere('address_city', 'like', "%{$query}%")
+            ->limit(20)
+            ->get();
 
         return response()->json($patients);
     }

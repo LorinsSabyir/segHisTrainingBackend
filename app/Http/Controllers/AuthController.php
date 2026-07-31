@@ -23,21 +23,35 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        $fields['password'] = Hash::make($fields['password']);
+        // TODO: fix
+        try {
+            $lastUser = User::orderByDesc('personnel_id')->first();
 
-        $user = User::create($fields);
+            $fields['password'] = Hash::make($fields['password']);
+            $fields['personnel_id'] = $lastUser ? str_pad((int) $lastUser->personnel_id + 1, 6, '0', STR_PAD_LEFT) : '100001';
 
-        $token = $user->createToken($request->name_first);
+            $user = User::create($fields);
 
-        return [
-            'name_first' => $user->name_first,
-            'name_last' => $user->name_last,
-            'name_middle' => $user->name_middle,
-            'name_suffix' => $user->name_suffix,
-            'role' => $user->role,
-            'user' => $user,
-            'token' => $token->plainTextToken
-        ];
+            $token = $user->createToken($request->name_first);
+    
+            return [
+                'name_first' => $user->name_first,
+                'name_last' => $user->name_last,
+                'name_middle' => $user->name_middle,
+                'name_suffix' => $user->name_suffix,
+                'role' => $user->role,
+                'user' => $user,
+                'token' => $token->plainTextToken
+            ];
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Illuminate\Support\Facades\Log::error('Failed to create user: ' . $e->getMessage());
+    
+            return response()->json([
+                'message' => 'Unable to create user record. Please try again.',
+            ], 500);
+        }
+
     }
 
     public function login(Request $request)
