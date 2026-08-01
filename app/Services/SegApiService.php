@@ -311,4 +311,48 @@ class SegApiService
         return $this->get('/laboratory/show/id/' . $id);
     }
 
+    // ============================================
+    // RADIOLOGY ENDPOINTS
+    // ============================================
+
+    /**
+     * Retrieve all radiology
+     * GET /radiology/show/
+     */
+    public function getAllRadiology()
+    {
+        return $this->get('/radiology/show/');
+    }
+
+    /**
+     * Retrieve radiology by ID
+     * GET /radiology/show/id/{id}
+     */
+    public function getRadiologyById($id)
+    {
+        return $this->get('/radiology/show/id/' . $id);
+    }
+
+    // ============================================
+    // PRESCRIPTION ENDPOINTS
+    // ============================================
+
+    /**
+     * Retrieve all prescription
+     * GET /prescription/show/
+     */
+    public function getAllPrescription()
+    {
+        return $this->get('/prescription/show/');
+    }
+
+    /**
+     * Retrieve prescription by ID
+     * GET /prescription/show/id/{id}
+     */
+    public function getPrescriptionById($id)
+    {
+        return $this->get('/prescription/show/id/' . $id);
+    }
+
 }

@@ -18,7 +18,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 use App\Http\Controllers\UserController;
 
 Route::middleware('auth:sanctum')->prefix('user')->group(function () {
-
+  
 });
 
 
@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
 
 
 // ---------- API routes for hospital management ----------
-// Patient Api
+// Patient Api  
 use App\Http\Controllers\PatientController;
 
 Route::middleware('auth:sanctum')->prefix('patient')->group(function () {
