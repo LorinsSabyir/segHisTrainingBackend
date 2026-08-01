@@ -19,6 +19,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             PatientSeeder::class,
             WardSeeder::class,
+            RadiologySeeder::class,
+            LaboratorySeeder::class,
+            PrescriptionSeeder::class,
+            
             
         ]);
     }
