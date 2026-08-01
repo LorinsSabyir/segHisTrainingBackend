@@ -18,7 +18,7 @@ class SegLaboratoryController extends Controller
      */
     public function index(): JsonResponse
     {
-        $result = $this->segApiService->getAllNurses();
+        $result = $this->segApiService->getAllLaboratory();
 
         return $this->respond($result);
     }
@@ -28,7 +28,7 @@ class SegLaboratoryController extends Controller
      */
     public function show(string $id): JsonResponse
     {
-        $result = $this->segApiService->getNurseById($id);
+        $result = $this->segApiService->getLaboratoryById($id);
 
         return $this->respond($result);
     }

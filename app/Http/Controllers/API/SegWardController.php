@@ -14,7 +14,7 @@ class SegWardController extends Controller
     }
 
     /**
-     * GET /api/seg/ward
+     * GET /api/seg/ward/show
      */
     public function index(): JsonResponse
     {

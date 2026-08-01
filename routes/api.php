@@ -156,7 +156,6 @@ Route::middleware('auth:sanctum')->prefix('laboratory')->group(function () {
 // ---------- External API routes for SEG service ----------
 
 // Doctors API.
-
 use App\Http\Controllers\Api\SegDoctorController;
 
 Route::middleware(['auth:sanctum', 'role:admin,nurse,doctor'])->prefix('seg/doctor')->group(function () {
@@ -169,7 +168,6 @@ Route::middleware(['auth:sanctum', 'role:admin,nurse,doctor'])->prefix('seg/doct
 });
 
 // Nurses API
-
 use App\Http\Controllers\Api\SegNurseController;
 
 Route::middleware(['auth:sanctum', 'role:admin,nurse,doctor'])->prefix('seg/nurse')->group(function () {
@@ -180,7 +178,6 @@ Route::middleware(['auth:sanctum', 'role:admin,nurse,doctor'])->prefix('seg/nurs
 });
 
 // Department API
-
 use App\Http\Controllers\Api\SegDepartmentController;
 
 Route::middleware(['auth:sanctum', 'role:admin,nurse,doctor'])->prefix('seg/department')->group(function () {
@@ -191,7 +188,6 @@ Route::middleware(['auth:sanctum', 'role:admin,nurse,doctor'])->prefix('seg/depa
 });
 
 // Encounters API
-
 use App\Http\Controllers\Api\SegEncounterController;
 
 Route::middleware(['auth:sanctum', 'role:admin,nurse,doctor'])->prefix('seg/patient_encounters')->group(function () {
@@ -202,7 +198,6 @@ Route::middleware(['auth:sanctum', 'role:admin,nurse,doctor'])->prefix('seg/pati
 });
 
 // Laboratory API
-
 use App\Http\Controllers\Api\SegLaboratoryController;
 
 Route::middleware(['auth:sanctum', 'role:admin,nurse,doctor'])->prefix('seg/laboratory')->group(function () {
@@ -213,7 +208,6 @@ Route::middleware(['auth:sanctum', 'role:admin,nurse,doctor'])->prefix('seg/labo
 });
 
 // Ward API
-
 use App\Http\Controllers\Api\SegWardController;
 
 Route::middleware(['auth:sanctum', 'role:admin,nurse,doctor'])->prefix('seg/ward')->group(function () {
@@ -223,8 +217,17 @@ Route::middleware(['auth:sanctum', 'role:admin,nurse,doctor'])->prefix('seg/ward
 
 });
 
-// Patients API
+// Radiology API
+use App\Http\Controllers\Api\SegRadiologyController;
 
+Route::middleware(['auth:sanctum', 'role:admin,nurse,doctor'])->prefix('seg/radiology')->group(function () {
+
+    Route::get('/', [SegRadiologyController::class, 'index']);
+    Route::get('/{id}', [SegRadiologyController::class, 'show']);
+
+});
+
+// Patients API
 use App\Http\Controllers\Api\SegPatientController;
 
 Route::middleware(['auth:sanctum', 'role:admin,nurse,doctor'])->prefix('seg/patient')->group(function () {
