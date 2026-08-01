@@ -58,6 +58,7 @@ Route::middleware('auth:sanctum')->prefix('patient_encounter')->group(function (
   Route::put('/update/{patientEncounter}', [PatientEncounterController::class, 'update']);
   Route::delete('/delete/{patientEncounter}', [PatientEncounterController::class, 'destroy']);
   Route::get('/pid/{patient_id}', [PatientEncounterController::class, 'getPatientByPatientId']);
+  Route::get('/search', [PatientEncounterController::class, 'search']);
 
 });
 
