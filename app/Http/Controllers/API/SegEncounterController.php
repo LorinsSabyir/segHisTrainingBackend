@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\SegApiService;
 use Illuminate\Http\JsonResponse;
 
-class SegEncountersController extends Controller
+class SegEncounterController extends Controller
 {
     public function __construct(protected SegApiService $segApiService)
     {

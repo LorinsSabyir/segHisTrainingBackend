@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->prefix('user')->group(function () {
 
 // ---------- API routes for admin user management ----------
 Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
-
+  
 });
 
 
@@ -44,6 +44,7 @@ Route::middleware('auth:sanctum')->prefix('patient')->group(function () {
 
   Route::get('/pid/{pid}', [PatientController::class, 'getPatientByPid']);
   Route::get('/name/{name_last}/{name_first}', [PatientController::class, 'getPatientByName']);
+
   Route::get('/search', [PatientController::class, 'search']);
   
 });
@@ -58,6 +59,7 @@ Route::middleware('auth:sanctum')->prefix('patient_encounter')->group(function (
   Route::put('/update/{patientEncounter}', [PatientEncounterController::class, 'update']);
   Route::delete('/delete/{patientEncounter}', [PatientEncounterController::class, 'destroy']);
   Route::get('/pid/{patient_id}', [PatientEncounterController::class, 'getPatientByPatientId']);
+
   Route::get('/search', [PatientEncounterController::class, 'search']);
 
 });
@@ -85,6 +87,8 @@ Route::middleware('auth:sanctum')->prefix('notification')->group(function () {
   Route::get('/show/{notification}', [NotificationController::class, 'show']);
   Route::put('/update/{notification}', [NotificationController::class, 'update']);
   Route::delete('/delete/{notification}', [NotificationController::class, 'destroy']);
+
+  Route::patch('/{notification}', [NotificationController::class, 'markAsRead']);
 });
 
 
@@ -117,11 +121,19 @@ Route::middleware('auth:sanctum')->prefix('seg/department')->group(function () {
 });
 
 // Encounters API
-use App\Http\Controllers\Api\SegEncountersController;
+use App\Http\Controllers\Api\SegEncounterController;
 
 Route::middleware('auth:sanctum')->prefix('seg/patient_encounters')->group(function () {
-  Route::get('/', [SegEncountersController::class, 'index']);
-  Route::get('/{id}', [SegEncountersController::class, 'show']);
+  Route::get('/', [SegEncounterController::class, 'index']);
+  Route::get('/{id}', [SegEncounterController::class, 'show']);
+});
+
+// Laboratory API
+use App\Http\Controllers\Api\SegLaboratoryController;
+
+Route::middleware('auth:sanctum')->prefix('seg/laboratory')->group(function () {
+  Route::get('/', [SegLaboratoryController::class, 'index']);
+  Route::get('/{id}', [SegLaboratoryController::class, 'show']);
 });
 
 // Ward API

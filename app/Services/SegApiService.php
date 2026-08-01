@@ -289,5 +289,26 @@ class SegApiService
         return $this->get('/encounter/show/id/' . $id);
     }
     
+    // ============================================
+    // LABORATORY ENDPOINTS
+    // ============================================
+
+    /**
+     * Retrieve all laboratory
+     * GET /laboratory/show/
+     */
+    public function getAllLaboratory()
+    {
+        return $this->get('/laboratory/show/');
+    }
+
+    /**
+     * Retrieve laboratory by ID
+     * GET /laboratory/show/id/{id}
+     */
+    public function getLaboratoryById($id)
+    {
+        return $this->get('/laboratory/show/id/' . $id);
+    }
 
 }

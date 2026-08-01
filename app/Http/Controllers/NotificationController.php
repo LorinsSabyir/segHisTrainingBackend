@@ -23,7 +23,7 @@ class NotificationController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        return Notification::with(['sender', 'receiver'])->get();
+        return Notification::with(['sender', 'receiver'])->latest()->get();
     }
 
     /**
@@ -129,6 +129,28 @@ class NotificationController extends Controller implements HasMiddleware
         return response()->json([
             'message' => 'Notification deleted successfully.',
             'deleted' => $notification,
+        ]);
+    }
+
+    /**
+     * Mark as read the notification
+     */
+    public function markAsRead(Request $request, Notification $notification)
+    {
+        // if ($notification->receiver_id !== $request->user()->id) {
+        //     return response()->json([
+        //         'message' => 'Unauthorized.',
+        //     ], 403);
+        // }
+    
+        $notification->update([
+            'is_read' => true,
+            'read_at' => now(),
+        ]);
+    
+        return response()->json([
+            'message' => 'Notification marked as read.',
+            'notification' => $notification,
         ]);
     }
 }

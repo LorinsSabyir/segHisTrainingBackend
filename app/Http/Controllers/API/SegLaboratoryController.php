@@ -7,32 +7,32 @@ use Illuminate\Http\Request;
 use App\Services\SegApiService;
 use Illuminate\Http\JsonResponse;
 
-class SegWardController extends Controller
+class SegLaboratoryController extends Controller
 {
     public function __construct(protected SegApiService $segApiService)
     {
     }
 
     /**
-     * GET /api/seg/ward
+     * GET /api/seg/nurse
      */
     public function index(): JsonResponse
     {
-        $result = $this->segApiService->getAllWards();
+        $result = $this->segApiService->getAllNurses();
 
         return $this->respond($result);
     }
 
     /**
-     * GET /api/seg/ward/{id}
+     * GET /api/seg/nurse/{id}
      */
     public function show(string $id): JsonResponse
     {
-        $result = $this->segApiService->getWardById($id);
+        $result = $this->segApiService->getNurseById($id);
 
         return $this->respond($result);
     }
-    
+
     /**
      * Shared response formatter for this controller's actions.
      */
@@ -47,5 +47,4 @@ class SegWardController extends Controller
 
         return response()->json($result['data']);
     }
-    
 }
