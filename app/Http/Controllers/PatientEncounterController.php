@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class PatientEncounterController extends Controller implements HasMiddleware
 {
@@ -68,17 +69,43 @@ class PatientEncounterController extends Controller implements HasMiddleware
         }
 
         try {
-            // Generate Case Number if none is provided
-            if (empty($fields['case_nr'])) {
-                $lastEncounter = PatientEncounter::latest('id')->first();
-                $next = $lastEncounter ? $lastEncounter->id + 1 : 1;
-                $fields['case_nr'] = 'CASE-'.str_pad($next, 6, '0', STR_PAD_LEFT);
-            }
+            $patientEncounter = DB::transaction(function () use ($request, $fields) {
 
-            $encounter = PatientEncounter::create($fields);
+                // Generate Case Number if none is provided
+                if (empty($fields['case_nr'])) {
+                    $lastEncounter = PatientEncounter::latest('id')->first();
+                    $next = $lastEncounter ? $lastEncounter->id + 1 : 1;
+                    $fields['case_nr'] = 'CASE-'.str_pad($next, 6, '0', STR_PAD_LEFT);
+                }
+
+                $patientEncounter = PatientEncounter::create($fields);
+
+                $request->user()->sentNotification()->create([
+                    'title' => 'Patient Registered',
+                    'message' => "You registered patient encounter for {$patientEncounter->name_first} {$patientEncounter->name_last} ({$patientEncounter->pid}).",
+                    'category' => 'patient',
+                    'priority' => 'normal',
+                    'action_type' => 'patient',
+                    'action_id' => $patientEncounter->id,
+                    'receiver_id' => $request->user()->id,
+                ]);
+
+                return $patientEncounter;
+            });
+
+
+
+            // Generate Case Number if none is provided
+            // if (empty($fields['case_nr'])) {
+            //     $lastEncounter = PatientEncounter::latest('id')->first();
+            //     $next = $lastEncounter ? $lastEncounter->id + 1 : 1;
+            //     $fields['case_nr'] = 'CASE-'.str_pad($next, 6, '0', STR_PAD_LEFT);
+            // }
+
+            // $encounter = PatientEncounter::create($fields);
 
             return response()->json(
-                $encounter->load(['patient', 'ward', 'nurse', 'doctor']),
+                $patientEncounter->load(['patient', 'ward', 'nurse', 'doctor']),
                 201
             );
         } catch (QueryException $e) {

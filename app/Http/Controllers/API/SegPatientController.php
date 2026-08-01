@@ -14,7 +14,7 @@ class SegPatientController extends Controller
     }
 
     /**
-     * GET /api/seg/doctors
+     * GET /api/seg/patient
      */
     public function index(): JsonResponse
     {
@@ -24,7 +24,7 @@ class SegPatientController extends Controller
     }
 
     /**
-     * GET /api/seg/Patient/{id}
+     * GET /api/seg/patient/{id}
      */
     public function show(string $id): JsonResponse
     {
@@ -34,7 +34,7 @@ class SegPatientController extends Controller
     }
 
     /**
-     * GET /api/seg/Patient/name/{firstName}/{lastName}
+     * GET /api/seg/patient/name/{firstName}/{lastName}
      * Retrieve a specific doctor based on given {name}.
      */
     public function byName(string $firstName, string $lastName): JsonResponse

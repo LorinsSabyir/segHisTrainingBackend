@@ -15,7 +15,7 @@ class SegNurseController extends Controller
     }
 
     /**
-     * GET /api/seg/doctors
+     * GET /api/seg/nurse
      */
     public function index(): JsonResponse
     {
@@ -25,7 +25,7 @@ class SegNurseController extends Controller
     }
 
     /**
-     * GET /api/seg/doctors/{id}
+     * GET /api/seg/nurse/{id}
      */
     public function show(string $id): JsonResponse
     {

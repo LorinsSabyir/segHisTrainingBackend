@@ -76,6 +76,17 @@ Route::middleware('auth:sanctum')->prefix('department')->group(function () {
 
 });
 
+// Notification Api
+use App\Http\Controllers\NotificationController;
+
+Route::middleware('auth:sanctum')->prefix('notification')->group(function () {
+  Route::get('/', [NotificationController::class, 'index']);
+  Route::post('/store', [NotificationController::class, 'store']);
+  Route::get('/show/{notification}', [NotificationController::class, 'show']);
+  Route::put('/update/{notification}', [NotificationController::class, 'update']);
+  Route::delete('/delete/{notification}', [NotificationController::class, 'destroy']);
+});
+
 
 
 // ---------- External API routes for SEG service ----------
@@ -89,33 +100,36 @@ Route::middleware('auth:sanctum')->prefix('seg/doctor')->group(function () {
   Route::get('/{id}', [SegDoctorController::class, 'show']);
 });
 
-// TODO: Fill in the routes for the other SEG API controllers (Nurses, Departments, Encounters, Wards) as needed.
 // Nurses API
 use App\Http\Controllers\Api\SegNurseController;
 
 Route::middleware('auth:sanctum')->prefix('seg/nurse')->group(function () {
-
+  Route::get('/', [SegNurseController::class, 'index']);
+  Route::get('/{id}', [SegNurseController::class, 'show']);
 });
 
 // Department API
 use App\Http\Controllers\Api\SegDepartmentController;
 
 Route::middleware('auth:sanctum')->prefix('seg/department')->group(function () {
-
+  Route::get('/', [SegDepartmentController::class, 'index']);
+  Route::get('/{id}', [SegDepartmentController::class, 'show']);
 });
 
 // Encounters API
 use App\Http\Controllers\Api\SegEncountersController;
 
 Route::middleware('auth:sanctum')->prefix('seg/patient_encounters')->group(function () {
-
+  Route::get('/', [SegEncountersController::class, 'index']);
+  Route::get('/{id}', [SegEncountersController::class, 'show']);
 });
 
 // Ward API
 use App\Http\Controllers\Api\SegWardController;
 
 Route::middleware('auth:sanctum')->prefix('seg/ward')->group(function () {
-
+  Route::get('/', [SegWardController::class, 'index']);
+  Route::get('/{id}', [SegWardController::class, 'show']);
 });
 
 // Patients API

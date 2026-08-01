@@ -7,6 +7,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class PatientController extends Controller implements HasMiddleware
@@ -60,12 +61,26 @@ class PatientController extends Controller implements HasMiddleware
 
         ]);
         try {
-            $lastPatient = Patient::orderByDesc('pid')->first();
+            $patient = DB::transaction(function () use ($request, $fields) {
+                $lastPatient = Patient::orderByDesc('pid')->first();
 
-            $fields['pid'] = $lastPatient ? str_pad((int) $lastPatient->pid + 1, 6, '0', STR_PAD_LEFT) : '000001';
-            $fields['date_registered'] = now();
+                $fields['pid'] = $lastPatient ? str_pad((int) $lastPatient->pid + 1, 6, '0', STR_PAD_LEFT) : '000001';
+                $fields['date_registered'] = now();
 
-            $patient = $request->user()->nursePatientLog()->create($fields);
+                $patient = $request->user()->nursePatientLog()->create($fields);
+
+                $request->user()->sentNotification()->create([
+                    'title' => 'Patient Registered',
+                    'message' => "You registered patient {$patient->name_first} {$patient->name_last} ({$patient->pid}).",
+                    'category' => 'patient',
+                    'priority' => 'normal',
+                    'action_type' => 'patient',
+                    'action_id' => $patient->id,
+                    'receiver_id' => $request->user()->id,
+                ]);
+
+                return $patient;
+            });
 
             return response()->json($patient, 201);
         } catch (QueryException $e) {
@@ -139,7 +154,7 @@ class PatientController extends Controller implements HasMiddleware
      */
     public function destroy(Patient $patient)
     {
-        $patient->delete($patient);
+        $patient->delete();
 
         return response()->json([
             'message' => 'Patient deleted successfully.',

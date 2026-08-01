@@ -222,4 +222,72 @@ class SegApiService
     {
         return $this->get('/patient/show/name_last/' . $lastName . '/name_first/' . $firstName);
     }
+
+    // ============================================
+    // WARDS ENDPOINTS
+    // ============================================
+
+    /**
+     * Retrieve all Ward
+     * GET /ward/show/
+     */
+    public function getAllWards()
+    {
+        return $this->get('/ward/show/');
+    }
+
+    /**
+     * Retrieve ward by ID
+     * GET /ward/show/id/{id}
+     */
+    public function getWardById($id)
+    {
+        return $this->get('/ward/show/id/' . $id);
+    }
+
+    // ============================================
+    // DEPARTMENT ENDPOINTS
+    // ============================================
+
+    /**
+     * Retrieve all department
+     * GET /department/show/
+     */
+    public function getAllDepartments()
+    {
+        return $this->get('/department/show/');
+    }
+
+    /**
+     * Retrieve department by ID
+     * GET /department/show/id/{id}
+     */
+    public function getDepartmentById($id)
+    {
+        return $this->get('/department/show/id/' . $id);
+    }
+
+    // ============================================
+    // ENCOUNTER ENDPOINTS
+    // ============================================
+
+    /**
+     * Retrieve all encounter
+     * GET /encounter/show/
+     */
+    public function getAllEncounter()
+    {
+        return $this->get('/encounter/show/');
+    }
+
+    /**
+     * Retrieve encounter by ID
+     * GET /encounter/show/id/{id}
+     */
+    public function getEncounterById($id)
+    {
+        return $this->get('/encounter/show/id/' . $id);
+    }
+    
+
 }
