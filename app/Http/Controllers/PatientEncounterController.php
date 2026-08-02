@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PatientEncounter;
+use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -24,7 +25,8 @@ class PatientEncounterController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        return PatientEncounter::with(['patient', 'ward', 'nurse', 'doctor'])->get();
+        // return PatientEncounter::with(['patient', 'ward', 'nurse', 'doctor'])->get();
+        return PatientEncounter::all();
     }
 
     /**
@@ -54,17 +56,16 @@ class PatientEncounterController extends Controller implements HasMiddleware
 
             'patient_id' => 'required|exists:patients,id',
             'ward_id' => 'nullable|exists:wards,id',
+            'doctor_id' => 'nullable|exists:users,id',
         ]);
 
         $user = $request->user();
 
         if ($user->role === 'nurse') {
             $fields['nurse_id'] = $user->id;
-        } elseif ($user->role === 'doctor') {
-            $fields['doctor_id'] = $user->id;
         } elseif ($user->role !== 'admin') {
             return response()->json([
-                'message' => 'Only nurses, doctors, and administrators can create patient encounters.',
+                'message' => 'Only nurses, and administrators can create patient encounters.',
             ], 403);
         }
 
@@ -79,30 +80,20 @@ class PatientEncounterController extends Controller implements HasMiddleware
                 }
 
                 $patientEncounter = PatientEncounter::create($fields);
+                $patient = $patientEncounter->patient;
 
                 $request->user()->sentNotification()->create([
-                    'title' => 'Patient Registered',
-                    'message' => "You registered patient encounter for {$patientEncounter->name_first} {$patientEncounter->name_last} ({$patientEncounter->pid}).",
+                    'title' => 'Patient Encounter Created',
+                    'message' => "A patient encounter was created for {$patient->name_first} {$patient->name_last} ({$patient->pid}).",
                     'category' => 'patient',
                     'priority' => 'normal',
-                    'action_type' => 'patient',
+                    'action_type' => 'patient_encounter',
                     'action_id' => $patientEncounter->id,
-                    'receiver_id' => $request->user()->id,
+                    'receiver_id' => $fields['doctor_id'] ?? $request->user()->id,
                 ]);
 
                 return $patientEncounter;
             });
-
-
-
-            // Generate Case Number if none is provided
-            // if (empty($fields['case_nr'])) {
-            //     $lastEncounter = PatientEncounter::latest('id')->first();
-            //     $next = $lastEncounter ? $lastEncounter->id + 1 : 1;
-            //     $fields['case_nr'] = 'CASE-'.str_pad($next, 6, '0', STR_PAD_LEFT);
-            // }
-
-            // $encounter = PatientEncounter::create($fields);
 
             return response()->json(
                 $patientEncounter->load(['patient', 'ward', 'nurse', 'doctor']),

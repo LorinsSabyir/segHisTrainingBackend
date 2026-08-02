@@ -21,9 +21,11 @@ class NotificationController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Notification::with(['sender', 'receiver'])->latest()->get();
+        return Notification::with(['sender', 'receiver'])
+            ->where('receiver_id', $request->user()->id)
+            ->get();
     }
 
     /**

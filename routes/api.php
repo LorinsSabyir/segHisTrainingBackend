@@ -14,16 +14,26 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-// ---------- API routes for account management ----------
+// ---------- API routes for user management ----------
+use App\Http\Controllers\UserController;
+// Account API
+Route::middleware(['auth:sanctum'])->prefix('user')->group(function () {
+  Route::get('/show/{user}', [UserController::class, 'show']);
+  Route::put('/update/{user}', [UserController::class, 'update']);
+  Route::get('/nurse', [UserController::class, 'getAllNurses']);
+  Route::get('/doctors', [UserController::class, 'getAllDoctors']);
+});
 
-Route::middleware(['auth:sanctum'])->prefix('user')->group(function () {});
+// Admin only API
+Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(function () {
+  Route::get('/', [UserController::class, 'index']);
+  Route::post('/store', [UserController::class, 'store']);
+  Route::delete('/delete/{user}', [UserController::class, 'destroy']);
 
-// ---------- API routes for admin user management ----------
+});
 
-Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(function () {});
 
 // ---------- API routes for hospital management ----------
-
 // Patient Api
 use App\Http\Controllers\PatientController;
 
